@@ -1,0 +1,82 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Test</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+  <!-- REQUIRED 1/2 - AngularJS Core -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.js"></script>
+  <!-- REQUIRED 2/2 - the image crop directive -->
+  <script src="resrc.angular.js"></script>
+  <script>
+    var myApp = null;
+    (function() {
+
+      'use strict';
+
+      angular.module('myApp', ['ReSRC'])
+        .config(function(responsiveImageProvider) {
+
+          responsiveImageProvider.init({
+            pixelRounding: 20,
+            trial: true
+          });
+
+        })
+        .controller('MainController', function($scope) {
+          console.log('MainController');
+        });
+
+    })();
+  </script>
+  
+  <style>
+    /* Styles for this demo page */
+    body {
+      font-size: 12px;
+      font-family: Helvetica, Arial;
+      background: white;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    a {
+      text-decoration: underline;
+      color: blue;
+      cursor: pointer;
+    }
+    .small {
+      width: 50px;
+      height: 50px;
+    }
+    .medium {
+      width: 200px;
+      height: 200px;
+    }
+    .large {
+      width: 500px;
+      height: 500px;
+    }
+  </style>
+  <body>
+     <div ng-controller="MainController">
+      <h2>ReSRC.it Angular Directive</h2>
+      <p>An AngularJS Directive by <a href="https://twitter.com/andyshora">@andyshora</a></p>
+      <hr>
+      <p>Small</p>
+      <div class="small">
+        <img class="resrcit" data-src="http://s3.stackey.com/2014.png">
+      </div>
+      <p>Medium</p>
+      <div class="medium">
+        <img class="resrcit" data-src="http://s3.stackey.com/2014.png">
+      </div>
+      <p>Large</p>
+      <div class="large">
+        <img class="resrcit" data-src="http://s3.stackey.com/2014.png">
+      </div>
+      
+     </div>
+  </body>
+</html>
