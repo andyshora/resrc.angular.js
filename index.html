@@ -19,7 +19,6 @@
         .config(function(responsiveImageProvider) {
 
           responsiveImageProvider.init({
-            pixelRounding: 20,
             trial: true
           });
 
@@ -47,16 +46,25 @@
       cursor: pointer;
     }
     .small {
-      width: 50px;
-      height: 50px;
+      width: 25%;
     }
     .medium {
-      width: 200px;
-      height: 200px;
+      width: 50%;
     }
     .large {
-      width: 500px;
-      height: 500px;
+      width: 90%;
+    }
+    .resrc {
+      width: 100%
+    }
+    .resrc-wrap > img {
+      opacity: 0;
+      -webkit-transition: opacity .5s;
+      -o-transition: opacity .5s;
+      transition: opacity .5s;
+    }
+    .resrc-wrap--loaded > img {
+      opacity: 1;
     }
   </style>
   <body>
@@ -66,15 +74,15 @@
       <hr>
       <p>Small</p>
       <div class="small">
-        <img class="resrcit" data-src="http://s3.stackey.com/2014.png">
+        <img class="resrcit" data-src="http://s3.stackey.com/4.jpg">
       </div>
       <p>Medium</p>
       <div class="medium">
-        <img class="resrcit" data-src="http://s3.stackey.com/2014.png">
+        <img class="resrcit" data-src="http://s3.stackey.com/4.jpg">
       </div>
       <p>Large</p>
       <div class="large">
-        <img class="resrcit" data-src="http://s3.stackey.com/2014.png">
+        <img class="resrcit" data-src="http://s3.stackey.com/4.jpg">
       </div>
       
      </div>

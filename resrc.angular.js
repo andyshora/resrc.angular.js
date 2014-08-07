@@ -66,18 +66,15 @@
 
       }
 
-      // initialise directive
+      // initialise directive with global options. this should be called from app config
       this.init = function(newConfig) {
-        console.log('provider init');
+        
         this.config = angular.extend(this.config, newConfig);
 
+        // if in trial mode, ensure trial url is set
         if (this.config.trial) {
           this.config.server = 'trial.resrc.it';
         }
-
-        console.log('this', this.config);
-
-        // this.loadAsync();
       };
 
       // get a config item
@@ -91,7 +88,6 @@
             return config[key];
           },
           init: function() {
-            console.log('$get init');
             loadAsync(function() {
               
               // Merge the contents of defaults into resrc.options
@@ -108,7 +104,7 @@
   angular.module('ReSRC.directives', [])
     .directive('resrcit', function() {
       return {
-        // template: '<div><img alt="{{ alt }}" data-dpi="{{ dpi }}" data-server="{{ server }}" src="{{ placeholder }}" data-src="{{ src }}" class="resrc"></div>',
+        template: '<div class="resrc-wrap"><img alt="{{ alt }}" data-dpi="{{ dpi }}" data-server="{{ server }}" ng-src="{{ placeholder }}" data-src="{{ src }}" class="resrc"></div>',
         replace: true,
         scope: {
           src: '@',
@@ -125,19 +121,25 @@
 
           scope.init = function() {
             // console.log('init directive', element[0], resrc);
-            resrc.resrc(element[0]);
+            // debugger
+            resrc.resrc(element[0].children[0]);
           };
 
           if ('resrc' in window) {
             scope.init();
           }
 
+          // debugger
+
+          angular.element(element[0].children[0]).bind('load', function() {
+            element.addClass('resrc-wrap--loaded');
+          });
+
           // responsiveImage.loadScript();
 
         },
         controller: function($scope, $rootScope, responsiveImage) {
           $rootScope.$on('resrc:loaded', function() {
-            console.log('resrc:loaded');
             $scope.init();
           });
 
