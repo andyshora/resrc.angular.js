@@ -51,15 +51,15 @@ Specifying the angular directive is so simple, it almost looks like just includi
 ---
 
 ## Usage Instructions
-####1. Include Angular (obviously)
+
+####1. Include Angular (obviously) and the directive
 ```html
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.js"></script>
-```
-####2. Include the directive
-```html
 <script src="path/to/resrc.angular.js"></script>
 ```
-####3. Initialise the dependencies via the provider, passing in config
+
+####2. Initialise the dependencies via the provider, passing in config (optional)
+
 ```javascript
 angular.module('myApp', ['ReSRC'])
     .config(function(responsiveImageProvider) {
@@ -73,20 +73,42 @@ angular.module('myApp', ['ReSRC'])
 
 })();
 ```
-####4. Include CSS (scss shown)
+####3. Include CSS (transitions optional)
 This is to ensure the images fill the container, and they fade in nicely on load.
 ```css
 .resrc-wrap > img {
   width: 100%;
   opacity: 0;
-  @include single-transition(opacity, .5s);
+  -moz-transition: opacity .5s;
+  -o-transition: opacity .5s;
+  -ms-transition: opacity .5s;
+  -webkit-transition: opacity .5s;
+  transition: opacity .5s;
 }
 .resrc-wrap--loaded > img {
   opacity: 1;
 }
 ```
-####5. Declare images
+####4. Declare images
 Remember to specify the *resrcit* class, and the *data-src* attribute referencing the large image.
 ```html
 <img class="resrcit" data-src="http://s3.stackey.com/dog.jpg">
 ```
+---
+
+##Config Options
+For use in Step 2 above.
+
+| Parameter | Values | Description |
+|--|----|------|
+| resrcOnLoad	| True or False (Default: True) | Resize images automatically once the page has fully loaded |
+| resrcOnResize |	True or False (Default: True) |	Resize images automatically on browser resize and rotation |
+| resrcOnPinch |	True or False(Default: False) |	Resize images automatically when images are pinch zoomed |
+| (currently only supported on iOS mobile devices) |
+| server |	Default: "app.resrc.it" |	ReSRC server address |
+| trial | True of False (Default: False) | Set to True if you're in trial mode. This sets server to trial.resrc.it |
+| ssl |	True or False(Default: false) | Generates https:// requests |
+| resrcClass |	Default: "resrc" |	The class name that identifies which elements to ReSRC |
+
+---
+### Check out the [index.html](https://github.com/andyshora/resrc.angular.js/blob/master/index.html) file in this repo for a working demo.
