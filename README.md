@@ -96,18 +96,33 @@ Remember to specify the *resrcit* class, and the *data-src* attribute referencin
 ```
 ---
 
-##Config Options
-For use in Step 2 above.
+## Global Config Options
+For use in Step 2 above, passed in as JSON.
 
 | Parameter | Values | Description |
 |---|----|-----|
-| resrcOnLoad	| True/False (Default: True) | Resize images automatically once the page has fully loaded |
-| resrcOnResize |	True/False (Default: True) |	Resize images automatically on browser resize and rotation |
-| resrcOnPinch |	True/False (Default: False) |	Resize images automatically when images are pinch zoomed (currently only supported on iOS mobile devices) |
+| resrcOnLoad	| True or False (Default: True) | Resize images automatically once the page has fully loaded |
+| resrcOnResize |	True or False (Default: True) |	Resize images automatically on browser resize and rotation |
+| resrcOnPinch |	True or False(Default: False) |	Resize images automatically when images are pinch zoomed (currently only supported on iOS mobile devices) |
 | server |	Default: "app.resrc.it" |	ReSRC server address |
-| trial | True/False (Default: False) | Set to True if you're in trial mode. This sets server to trial.resrc.it |
-| ssl |	True/False (Default: false) | Generates https:// requests |
+| trial | True of False (Default: False) | Set to True if you're in trial mode. This sets server to trial.resrc.it |
+| ssl |	True or False(Default: false) | Generates https:// requests |
 | resrcClass |	Default: "resrc" |	The class name that identifies which elements to ReSRC |
+
+
+---
+
+## Directive Options
+Set declaratively on img tag.
+
+| Parameter | Type | Description |
+|---|----|-----|
+| data-src | string | The full size image source. This must be added in [your ReSRC.it account](https://my.resrc.it/domains.aspx) |
+| dpi | string | dpi override |
+| server | string | server path - should not need changing |
+| alt | string | alt text for image |
+| placeholder | string | placeholder image to be displayed until image has loaded. e.g. spinner |
+| on-image-load | function | callback function executed on image load |
 
 ---
 ### Check out the [index.html](https://github.com/andyshora/resrc.angular.js/blob/master/index.html) file in this repo for a working demo.
