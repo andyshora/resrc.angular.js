@@ -13,6 +13,8 @@ An AngularJS Directive by [@andyshora](https://twitter.com/andyshora), for servi
 
 ### Oh yer, well that totally happens!
 
+If you haven't already, sign up to [ReSRC.it](http://www.resrc.it/). Go for the free trial option.
+
 ---
 
 ## Example
@@ -26,6 +28,7 @@ Some simple CSS to size the image containers.
     width: 50%;
 }
 ```
+
 
 Specifying the angular directive is so simple, it almost looks like just including a normal img element!
 
@@ -41,8 +44,49 @@ Specifying the angular directive is so simple, it almost looks like just includi
 </div>
 ```
 
-### Result
+## Result
 
 ![](http://s3.stackey.com/demo.png)
 
+---
 
+## Usage Instructions
+####1. Include Angular (obviously)
+```html
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.js"></script>
+```
+####2. Include the directive
+```html
+<script src="path/to/resrc.angular.js"></script>
+```
+####3. Initialise the dependencies via the provider, passing in config
+```javascript
+angular.module('myApp', ['ReSRC'])
+    .config(function(responsiveImageProvider) {
+
+      // init with config
+      responsiveImageProvider.init({
+        trial: true
+      });
+
+    });
+
+})();
+```
+####4. Include CSS (scss shown)
+This is to ensure the images fill the container, and they fade in nicely on load.
+```css
+.resrc-wrap > img {
+  width: 100%;
+  opacity: 0;
+  @include single-transition(opacity, .5s);
+}
+.resrc-wrap--loaded > img {
+  opacity: 1;
+}
+```
+####5. Declare images
+Remember to specify the *resrcit* class, and the *data-src* attribute referencing the large image.
+```html
+<img class="resrcit" data-src="http://s3.stackey.com/dog.jpg">
+```
