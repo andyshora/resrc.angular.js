@@ -1,5 +1,5 @@
 /**
- * AngularJS Directive - resrc.angular.js v1.0
+ * AngularJS Directive - resrc.angular.js v1.1
  * Copyright (c) 2014 Andy Shora, andyshora@gmail.com, andyshora.com
  * Licensed under the MPL License
  */
@@ -108,11 +108,15 @@
         };
       };
   });
-  
+
   angular.module('ReSRC.directives', [])
     .directive('resrcit', function() {
+
+      var templateInnerStr = '<img alt="{{ alt }}" data-dpi="{{ dpi }}" data-server="{{ server }}" ng-src="{{ placeholder }}" data-src="{{ src }}" class="resrc">';
+      var templateStr = '<div class="resrc-wrap">' + templateInnerStr + '</div>';
+
       return {
-        template: '<div class="resrc-wrap"><img alt="{{ alt }}" data-dpi="{{ dpi }}" data-server="{{ server }}" ng-src="{{ placeholder }}" data-src="{{ src }}" class="resrc"></div>',
+        template: templateStr,
         replace: true,
         scope: {
           src: '@',
@@ -127,21 +131,63 @@
 
           scope.init = function() {
             // make this component responsive via resrc.it lib
-            resrc.resrc(element[0].children[0]);
+            if ('resrc' in window) {
+              resrc.resrc(element[0].children[0]);
+            }
+
           };
+
+          scope.listenToSrcChange = function() {
+            attrs.$observe('src', function(src) {
+
+              element[0].className = element[0].className.replace('resrc-wrap--loaded', '');
+              element[0].children[0].remove();
+
+              // create new img programatically
+              var $newImg = document.createElement('img');
+              $newImg.className = 'resrc';
+              $newImg.setAttribute('data-src', src);
+
+              if (scope.dpi) {
+                $newImg.setAttribute('data-dpi', scope.dpi);
+              }
+              if (scope.server) {
+                $newImg.setAttribute('data-server', scope.server);
+              }
+              if (scope.alt) {
+                $newImg.setAttribute('alt', scope.alt);
+              }
+
+              // remove src, this will get populated by resrcit lib
+              $newImg.removeAttribute('src');
+
+              // append to wrapper
+              element[0].appendChild($newImg);
+
+              scope.bindImgLoadCallback();
+
+              scope.init();
+            });
+          };
+
 
           // if dependencies have already loaded, init straight away
           if ('resrc' in window) {
             scope.init();
+            scope.listenToSrcChange();
           }
 
-          // on image load, apply loaded class and exec callback
-          angular.element(element[0].children[0]).bind('load', function() {
-            element.addClass('resrc-wrap--loaded');
+          scope.bindImgLoadCallback = function() {
+            // on image load, apply loaded class and exec callback
+            angular.element(element[0].children[0]).bind('load', function() {
+              element.addClass('resrc-wrap--loaded');
 
-            // configurable callback
-            scope.onImageLoad.apply(this, arguments);
-          });
+              // configurable callback
+              scope.onImageLoad.apply(this, arguments);
+            });
+          };
+
+          scope.bindImgLoadCallback();
 
         },
         controller: function($scope, $rootScope, responsiveImage) {
@@ -149,10 +195,8 @@
           // when external lib has loaded, init this component
           $rootScope.$on('resrc:loaded', function() {
             $scope.init();
+            $scope.listenToSrcChange();
           });
-
-          // if src changes, reinitialise component
-          $scope.$watch('src', $scope.init);
 
           // configure deps
           responsiveImage.init();
