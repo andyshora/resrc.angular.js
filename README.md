@@ -127,4 +127,4 @@ Set declaratively on img tag.
 | on-image-load | function | callback function executed on image load |
 
 ---
-### Check out the [index.html](https://github.com/andyshora/resrc.angular.js/blob/master/index.html) file in this repo for a working demo.
+### Check out the [index.html](https://github.com/andyshora/resrc.angular.js/blob/master/index.html) file in this repo for a working demo, or if you're short on time, here's a [live demo on JSBin](http://jsbin.com/waqek/2).
