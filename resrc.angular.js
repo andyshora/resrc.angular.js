@@ -11,11 +11,11 @@
   angular.module('ReSRC.provider', []);
   angular.module('ReSRC', ['ReSRC.directives', 'ReSRC.provider']);
 
-  //provider style, full blown, configurable version  
-  angular.module('ReSRC.provider', [])   
+  // provider loads the global config and external dependencies
+  angular.module('ReSRC.provider', [])
     .provider('responsiveImage', function() {
 
-      var loadedScript = false;
+      var startedLoadingScript = false;
 
       this.config = {
         resrcOnResize: true, // Resize images on browser resize and device rotation.
@@ -51,13 +51,12 @@
         r.type = 'text/javascript';
         r.async = 'true';
 
-        
         r.onload = r.onreadystatechange = function () {
           var rs = this.readyState;
           if (d || rs && rs != 'complete' && rs != 'loaded') return;
           d = true;
           try {
-            
+
             resrc.ready(callback);
           } catch (e) {}
         };
@@ -68,7 +67,8 @@
 
       // initialise directive with global options. this should be called from app config
       this.init = function(newConfig) {
-        
+
+        // extend config with overrides
         this.config = angular.extend(this.config, newConfig);
 
         // if in trial mode, ensure trial url is set
@@ -77,22 +77,30 @@
         }
       };
 
-      // get a config item
       this.$get = function($injector) {
 
         var config = this.config;
         var rScope = $injector.get('$rootScope');
-        
+
         return {
           getConfigItem: function(key) {
             return config[key];
           },
           init: function() {
+
+            // if external deps have already started loading, return
+            if (startedLoadingScript) {
+              return;
+            }
+            startedLoadingScript = true;
+
+            // load deps
             loadAsync(function() {
-              
+
               // Merge the contents of defaults into resrc.options
               resrc.options = resrc.extend(resrc.options, config);
 
+              // let all the components know that the external dependencies have loaded
               rScope.$broadcast('resrc:loaded');
             });
           }
@@ -100,7 +108,7 @@
         };
       };
   });
-
+  
   angular.module('ReSRC.directives', [])
     .directive('resrcit', function() {
       return {
@@ -111,42 +119,45 @@
           dpi: '@',
           server: '@',
           alt: '@',
-          placeholder: '@'
+          placeholder: '@',
+          onImageLoad: '&'
         },
         restrict: 'AEC',
         link: function (scope, element, attrs) {
 
-          // var inTrialMode = responsiveImage.getConfigItem('trial');          
-          // console.log('element', element[0]);
-
           scope.init = function() {
-            // console.log('init directive', element[0], resrc);
-            // debugger
+            // make this component responsive via resrc.it lib
             resrc.resrc(element[0].children[0]);
           };
 
+          // if dependencies have already loaded, init straight away
           if ('resrc' in window) {
             scope.init();
           }
 
-          // debugger
-
+          // on image load, apply loaded class and exec callback
           angular.element(element[0].children[0]).bind('load', function() {
             element.addClass('resrc-wrap--loaded');
-          });
 
-          // responsiveImage.loadScript();
+            // configurable callback
+            scope.onImageLoad.apply(this, arguments);
+          });
 
         },
         controller: function($scope, $rootScope, responsiveImage) {
+
+          // when external lib has loaded, init this component
           $rootScope.$on('resrc:loaded', function() {
             $scope.init();
           });
 
+          // if src changes, reinitialise component
+          $scope.$watch('src', $scope.init);
+
+          // configure deps
           responsiveImage.init();
         }
       };
   });
-
 
 })();
