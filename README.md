@@ -48,6 +48,8 @@ Specifying the angular directive is so simple, it almost looks like just includi
 
 ![](http://s3.stackey.com/demo.png)
 
+##Here's a [live demo on JSBin](http://jsbin.com/waqek/2)
+
 ---
 
 ## Usage Instructions
