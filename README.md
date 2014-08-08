@@ -13,7 +13,11 @@ An AngularJS Directive by [@andyshora](https://twitter.com/andyshora), for servi
 
 ### Oh yer, well that totally happens!
 
-If you haven't already, sign up to [ReSRC.it](http://www.resrc.it/). Go for the free trial option.
+---
+
+Prerequisites
+*   Sign up to [ReSRC.it](http://www.resrc.it/). Go for the free trial option.
+*	Add the domain where your images are to [your ReSRC.it account](https://my.resrc.it/domains.aspx).
 
 ---
 
