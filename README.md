@@ -15,7 +15,7 @@ An AngularJS Directive by [@andyshora](https://twitter.com/andyshora), for servi
 
 ---
 
-Prerequisites
+##Prerequisites
 *   Sign up to [ReSRC.it](http://www.resrc.it/). Go for the free trial option.
 *	Add the domain where your images are to [your ReSRC.it account](https://my.resrc.it/domains.aspx).
 
