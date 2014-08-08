@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Test</title>
+  <title>ReSRC.it Angular Directive</title>
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
   <!-- REQUIRED 1/2 - AngularJS Core -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.js"></script>
@@ -37,13 +37,16 @@
       font-family: Helvetica, Arial;
       background: white;
       margin: 0;
-      padding: 0;
+      padding: 10px;
       text-align: center;
     }
     a {
       text-decoration: underline;
       color: blue;
       cursor: pointer;
+    }
+    .intro {
+      text-align: left;
     }
     .small {
       width: 25%;
@@ -70,19 +73,28 @@
   <body>
      <div ng-controller="MainController">
       <h2>ReSRC.it Angular Directive</h2>
-      <p>An AngularJS Directive by <a href="https://twitter.com/andyshora">@andyshora</a></p>
-      <hr>
-      <p>Small</p>
+      <p>An AngularJS Directive by <a href="https://twitter.com/andyshora">@andyshora</a>, for serving responsive images via <a href="http://www.resrc.it/">ReSRC.it</a></p>
+      <div class="intro">
+        <h3>Scenario: we have a bunch of images with fluid width containers.</h3>
+        <h3>Wouldn't it be great if...</h3>
+        <ul>
+          <li>The browser requested the optimum-sized image, looking at the width of the container before any image requests are made.</li>
+          <li>Retina support is detected before any images are requested, and retina images are loaded where possible.</li>
+          <li>As the viewport is resized, the images get replaced with bigger ones suited to the new container width.</li>
+        </ul>
+        <h3>Oh yer, well that totally happens!</h3>
+      </div>
+      <p>Small (width 25%)</p>
       <div class="small">
-        <img class="resrcit" data-src="http://s3.stackey.com/4.jpg">
+        <img class="resrcit" data-src="http://s3.stackey.com/dog.jpg">
       </div>
-      <p>Medium</p>
+      <p>Medium (width 50%)</p>
       <div class="medium">
-        <img class="resrcit" data-src="http://s3.stackey.com/4.jpg">
+        <img class="resrcit" data-src="http://s3.stackey.com/dog.jpg">
       </div>
-      <p>Large</p>
+      <p>Large (width 90%)</p>
       <div class="large">
-        <img class="resrcit" data-src="http://s3.stackey.com/4.jpg">
+        <img class="resrcit" data-src="http://s3.stackey.com/dog.jpg">
       </div>
       
      </div>
