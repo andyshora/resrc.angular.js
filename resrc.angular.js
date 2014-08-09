@@ -130,6 +130,7 @@
         link: function (scope, element, attrs) {
 
           scope.init = function() {
+
             // make this component responsive via resrc.it lib
             if ('resrc' in window) {
               resrc.resrc(element[0].children[0]);
@@ -137,45 +138,46 @@
 
           };
 
-          scope.listenToSrcChange = function() {
-            attrs.$observe('src', function(src) {
+          scope.createResponsiveImg = function(src) {
 
-              element[0].className = element[0].className.replace('resrc-wrap--loaded', '');
-              element[0].children[0].remove();
+            src = src || scope.src;
 
-              // create new img programatically
-              var $newImg = document.createElement('img');
-              $newImg.className = 'resrc';
-              $newImg.setAttribute('data-src', src);
+            if (!src) {
+              return;
+            }
 
-              if (scope.dpi) {
-                $newImg.setAttribute('data-dpi', scope.dpi);
-              }
-              if (scope.server) {
-                $newImg.setAttribute('data-server', scope.server);
-              }
-              if (scope.alt) {
-                $newImg.setAttribute('alt', scope.alt);
-              }
+            element[0].className = element[0].className.replace('resrc-wrap--loaded', '');
+            element[0].children[0].remove();
 
-              // remove src, this will get populated by resrcit lib
-              $newImg.removeAttribute('src');
+            // create new img programatically
+            var $newImg = document.createElement('img');
+            $newImg.className = 'resrc';
+            $newImg.setAttribute('data-src', src);
 
-              // append to wrapper
-              element[0].appendChild($newImg);
+            if (scope.dpi) {
+              $newImg.setAttribute('data-dpi', scope.dpi);
+            }
+            if (scope.server) {
+              $newImg.setAttribute('data-server', scope.server);
+            }
+            if (scope.alt) {
+              $newImg.setAttribute('alt', scope.alt);
+            }
 
-              scope.bindImgLoadCallback();
+            // remove src, this will get populated by resrcit lib
+            $newImg.removeAttribute('src');
 
-              scope.init();
-            });
-          };
+            // append to wrapper
+            element[0].appendChild($newImg);
 
+            scope.bindImgLoadCallback();
 
-          // if dependencies have already loaded, init straight away
-          if ('resrc' in window) {
             scope.init();
-            scope.listenToSrcChange();
           }
+
+          scope.listenToSrcChange = function() {
+            attrs.$observe('src', scope.createResponsiveImg);
+          };
 
           scope.bindImgLoadCallback = function() {
             // on image load, apply loaded class and exec callback
@@ -189,12 +191,21 @@
 
           scope.bindImgLoadCallback();
 
+
+          // if dependencies have already loaded, init straight away
+          if ('resrc' in window) {
+            scope.createResponsiveImg();
+            scope.listenToSrcChange();
+          }
+
+
+
         },
         controller: function($scope, $rootScope, responsiveImage) {
 
           // when external lib has loaded, init this component
           $rootScope.$on('resrc:loaded', function() {
-            $scope.init();
+            $scope.createResponsiveImg();
             $scope.listenToSrcChange();
           });
 
